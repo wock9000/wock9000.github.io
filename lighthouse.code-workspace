@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "name": "Lighthouse",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "workbench.sideBar.visible": true,
+    "workbench.editor.showTabs": "multiple",
+    "workbench.activityBar.location": "default",
+    "workbench.panel.defaultLocation": "bottom"
+  }
+}

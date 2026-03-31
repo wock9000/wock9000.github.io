@@ -1,0 +1,36 @@
+# Editor — shared VS Code tasks committed; machine-local settings stay private
+.vscode/settings.json
+.vscode/*.local
+.idea/
+
+# Cursor — commit `.cursor/rules/` only; ignore caches / local tooling if present
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# Session & handoff (site repo is not Arteria / sync-ai — keep those files out of git)
+CONTEXT.md
+CLAUDE.md
+.cowork_handoff
+
+# Secrets & env (GitHub Pages has no server-side secrets; never commit these by habit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local dev
+*.log
+
+# Optional stacks you might add later (defensive; repo stays no-build for now)
+node_modules/
+dist/
+.cache/
+.venv/
+venv/

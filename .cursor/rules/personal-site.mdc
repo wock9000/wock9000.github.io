@@ -1,0 +1,41 @@
+---
+description: Personal GitHub Pages site — static HTML/CSS; separate from employer work
+alwaysApply: true
+---
+
+# Personal site (wock9000.github.io)
+
+This repository is a **personal** static site. Treat it as separate from employer or client codebases (e.g. Arteria / sync-ai): different repo path, different concerns, no shared session files like `CONTEXT.md` in this project.
+
+## Recommended workflow (Cursor)
+
+Open **`lighthouse.code-workspace`** in a **dedicated Cursor window** for all site work. This rule has **`alwaysApply: true`** here only: the agent picks it up automatically in that window—no paste-in context. Avoid mixing site edits into the primary Arteria workspace unless you use **`site-and-sync-ai.code-workspace`** on purpose.
+
+## Stack
+
+- Plain **HTML** and **CSS**; one shared `style.css`.
+- **Root (`index.html`):** musings archive (list). No separate landing page.
+- **Pieces** under `musings/`: pure HTML; no `<script>` on those pages. New pieces: copy `musings/_template.html`, add a `<li>` to **`index.html`** at repo root (newest first).
+
+## Do not add
+
+- `CONTEXT.md` or other workspace session files meant for a different repo (also listed in **`.gitignore`** so they never ship by accident).
+- Frameworks, Tailwind, React, npm build pipelines, or Jekyll unless the site owner asks for a migration.
+- Secrets or credentials in any file.
+
+## Assets
+
+- GIFs or images: place under repo root or `assets/`; reference by relative path. Optional `.gif-block` slots exist in `musings/_template.html` (remove `hidden` to show).
+
+## Cursor / VS Code workspaces
+
+- **Site only (Lighthouse):** open **`lighthouse.code-workspace`** (or the repo folder). Keeps rules and tasks scoped to this repo.
+- **Site + Arteria in one window:** open **`site-and-sync-ai.code-workspace`** when you need both trees; personal-site rules still apply only inside the site folder unless you add sync-ai rules separately.
+
+## Local preview
+
+- Run **`./scripts/serve.sh`** (or the **Serve site (local)** task in Cursor/VS Code) so the site is served over HTTP; refresh after edits.
+
+## Git
+
+- Default branch here is **`trunk`**. Match GitHub Pages settings to that branch (or document if you rename to `main`).

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toward Truthful ESG</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <p class="nav-back"><a href="../">&larr; musings</a></p>
+    <h1 class="title">Toward Truthful ESG</h1>
+    <p class="subtitle">A proposal for multi-party, real-time sustainability scoring</p>
+    <p class="date">2026-03</p>
+  </header>
+
+  <hr class="divider" />
+
+  <main class="article">
+
+    <h2>Overview</h2>
+
+    <p>ESG scoring as currently practiced is structurally broken. Not because the underlying goal is wrong — measuring corporate sustainability matters — but because the architecture of how scores are produced guarantees distortion. Companies self-report. Rating agencies aggregate. Investors receive a number that, recent empirical research confirms, reflects methodology choices more than actual corporate behavior.</p>
+
+    <p>This paper proposes a different architecture: one in which sustainability data is attested to in real time by the participants who have direct knowledge of it — workers, suppliers, energy providers, logistics partners — recorded on an append-only, publicly verifiable ledger, and aggregated into a composite score that no single party controls or can retroactively revise. The result is a scoring system whose accuracy does not depend on the cooperation of the entity being scored.</p>
+
+    <hr class="divider" />
+
+    <h2>1. The problem with current ESG scoring</h2>
+
+    <p>Environmental, Social, and Governance (ESG) metrics have become central to sustainable finance. The appeal is clear: a structured, comparable way to assess whether companies behave ethically and sustainably. The reality is considerably messier.</p>
+
+    <p>Recent empirical work by Benuzzi, Bax, Paterlini, and Taufer (2025), analyzing Refinitiv's ESG data across three industrial sectors from 2012 to 2021, found that <strong>less than 45% of total absolute score variation is attributable to companies' own changes in disclosed information.</strong> The remaining 55% reflects methodology artifacts: the way new companies enter the rating universe, and the way peer-relative ranking mechanically inflates incumbent scores regardless of actual behavior.</p>
+
+    <p>Put concretely: a company that changed nothing about its operations over nine years could see its ESG score increase by over 17 points simply because smaller, less-disclosed firms joined the comparison universe below it. The score improved. Nothing else did.</p>
+
+    <p>This is not a failure of one provider's methodology. It is a structural consequence of how current ESG systems are designed:</p>
+
+    <ul>
+      <li>Companies are the primary source of their own data.</li>
+      <li>A single rating agency is the sole aggregator and administrator.</li>
+      <li>Historical scores can be revised retroactively without notice.</li>
+      <li>Workers, suppliers, and other direct participants in corporate operations are invisible to the scoring mechanism.</li>
+    </ul>
+
+    <p>The result is a system that is company-centric by design and gameable by construction. A company that understands the scoring methodology can optimize its disclosures rather than its practices. Score and substance decouple.</p>
+
+    <hr class="divider" />
+
+    <h2>2. A different architecture</h2>
+
+    <p>The core problem is informational: the parties with the most direct knowledge of a company's actual sustainability practices are not the parties who currently supply the data. A company's Scope 2 emissions are best attested to by its energy provider, not its sustainability department. Labor conditions are best attested to by workers, not by HR disclosures. Supply chain practices are best attested to by suppliers, not by procurement reports.</p>
+
+    <p>The proposed architecture inverts this. Rather than companies reporting about themselves through a single administrative intermediary, all participants with direct epistemic access to relevant data contribute attestations directly to a shared, append-only ledger. The composite score is derived from this multi-party record.</p>
+
+    <h3>Core properties</h3>
+
+    <ul>
+      <li><strong>Multi-party attestation.</strong> Data is submitted by independent participants — workers, suppliers, energy providers, logistics partners, community representatives, shareholders — each attesting to the dimensions they have direct knowledge of. The company is one participant among many, not the primary source.</li>
+      <li><strong>Append-only record.</strong> Attestations, once submitted, cannot be deleted or revised by any single party. The full history is permanently visible. Retroactive rewriting, documented as a material problem in current rating methodologies, is structurally impossible.</li>
+      <li><strong>Public weights and formula.</strong> The weighting scheme that aggregates attestations into a composite score is fully public. Transparency of the formula is what makes the score auditable.</li>
+      <li><strong>Real-time computation.</strong> Scores reflect current attestations, not annual disclosure cycles. Material changes in practice are reflected in scores as they occur, not twelve months later.</li>
+      <li><strong>Universal verifiability.</strong> Any observer — investor, regulator, journalist, employee, member of the public — can inspect the underlying attestations, the weighting formula, and the derived score. The system does not require trust in any single administrator because no single administrator exists.</li>
+    </ul>
+
+    <hr class="divider" />
+
+    <h2>3. Why this works: incentive alignment</h2>
+
+    <p>The usual objection to transparent scoring systems is that public weights invite gaming. If participants know that worker sentiment carries 15% weight, they will optimize for worker sentiment metrics rather than genuine improvement.</p>
+
+    <p>This objection is correct for single-source systems and wrong for multi-party systems. The distinction matters enormously.</p>
+
+    <p>In a company-controlled disclosure system, the company can hit a metric without moving the underlying reality: reframe a policy, adjust a reporting boundary, commission a favorable audit. The measure and the phenomenon are decoupled.</p>
+
+    <p>In a multi-party attestation system, hitting a worker sentiment metric requires actually improving conditions for workers, because workers are the ones reporting. A company cannot improve its worker sentiment score by issuing a press release. It has to change something workers experience directly. <strong>The gaming and the genuine improvement are, in this architecture, the same action.</strong></p>
+
+    <p>Public weights do not enable gaming — they make the system's priorities legible and give participants clear targets that require substantive change to hit. This is a positive feedback loop by design. The system does not rely on any participant being virtuous — it is structured so that accurate participation is also the rational one.</p>
+
+    <p>A further property: <strong>the accuracy of the score does not depend on the cooperation of the entity being scored.</strong> If a company declines to submit disclosures, the energy provider still attests to delivered energy mix, workers still report conditions, suppliers still record transactions. The company's non-participation cannot suppress the signal.</p>
+
+    <hr class="divider" />
+
+    <h2>4. On the role of the ledger</h2>
+
+    <p>The append-only ledger in this architecture is a record-keeping mechanism, not a technology position. The meaningful properties it provides are:</p>
+
+    <ul>
+      <li>No single administrator can revise historical records.</li>
+      <li>All participants write to the same shared record under consistent rules.</li>
+      <li>Provenance of each attestation is cryptographically attributable.</li>
+      <li>The record is publicly readable without requiring permission from any participant.</li>
+    </ul>
+
+    <p>These properties can be implemented in various ways — permissioned distributed ledgers, append-only databases with cryptographic audit trails, or other mechanisms — depending on the governance requirements of a specific deployment. The design choice that matters is the guarantee, not the specific implementation.</p>
+
+    <hr class="divider" />
+
+    <h2>5. What this does not require</h2>
+
+    <p>This proposal does not require full corporate transparency on all dimensions. Companies retain the right to keep competitively sensitive information confidential. The system does not need a company to disclose its energy procurement contracts if the utility is independently attesting to the delivered energy mix.</p>
+
+    <p>It does not require perfect attestor behavior. Individual attestors will sometimes misreport. The system's integrity does not rest on any single attestor's honesty — it rests on the aggregate consistency of independent reports. Coordinated misreporting across independent attestors is both costly and visible: divergence between simultaneous attestations from different participants is structurally anomalous and detectable by any observer.</p>
+
+    <p>It does not require resolving all methodological debates about what ESG should measure. Weights are tunable parameters, subject to public deliberation and empirical calibration. A well-designed system can surface multiple composite views of the same underlying attestation data rather than collapsing them into a single opaque number.</p>
+
+    <hr class="divider" />
+
+    <h2>6. Conclusion</h2>
+
+    <p>The ESG system as it currently exists measures something. The evidence suggests it measures corporate disclosure practices and peer-relative rank within methodologically constructed comparison groups more than it measures corporate sustainability behavior. The gap between what it claims to measure and what it actually measures is large, structurally produced, and not fixable by better aggregation formulas applied to the same data.</p>
+
+    <p>The fix is to change who supplies the data. When the participants with direct knowledge of corporate practices — workers, suppliers, energy providers, communities — are the ones attesting to those practices on a shared, public, append-only record, the score becomes coupled to the underlying phenomenon it is meant to track. Gaming the score requires changing the underlying reality. The feedback loop runs in the right direction.</p>
+
+    <p>This is not a radical proposal. It is an application of basic principles: measure things with the instruments closest to them, make the measurement process transparent, and ensure that no single party controls the record. The technology to implement it exists. The incentive alignment is sound. What remains is the will to prefer accuracy over convenience.</p>
+
+    <hr class="divider" />
+
+    <h2>Works cited</h2>
+
+    <p>Benuzzi, M., Bax, K., Paterlini, S., &amp; Taufer, E. (2025). Chasing ESG performance: How methodologies shape outcomes. <em>International Review of Financial Analysis</em>, 104, 104239. <a href="https://doi.org/10.1016/j.irfa.2025.104239">https://doi.org/10.1016/j.irfa.2025.104239</a></p>
+
+    <p>Berg, F., Fabisik, K., &amp; Sautner, Z. (2020). Rewriting history II: The (un)predictable past of ESG ratings. <em>European Corporate Governance Institute &ndash; Finance Working Paper</em> No. 708.</p>
+
+    <p>Berg, F., Koelbel, J. F., &amp; Rigobon, R. (2022). Aggregate confusion: The divergence of ESG ratings. <em>Review of Finance</em>, 26(6), 1315&ndash;1344.</p>
+
+    <p>Refinitiv / LSEG. (2023). Environmental, social and governance scores from LSEG. <a href="https://www.lseg.com/content/dam/data-analytics/en_us/documents/methodology/lseg-esg-scores-methodology.pdf">methodology document</a></p>
+
+  </main>
+
+  <footer>
+    <hr class="divider" />
+    <p class="footer-note"></p>
+  </footer>
+
+</body>
+</html>

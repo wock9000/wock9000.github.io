@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Serve site (local)",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/serve.sh",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PORT": "8000"
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}
