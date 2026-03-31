@@ -35,6 +35,81 @@
 
     <p>Put concretely: a company that changed nothing about its operations over nine years could see its ESG score increase by over 17 points simply because smaller, less-disclosed firms joined the comparison universe below it. The score improved. Nothing else did.</p>
 
+    <h3>How Refinitiv / LSEG constructs the score</h3>
+
+    <p>The three familiar pillars — Environmental, Social, Governance — are subdivided into ten category scores (for example, Resource Use, Emissions, Innovation under E; Workforce, Human Rights, Community, Product Responsibility under S; Management, Shareholders, CSR Strategy under G). Pillar weights vary by sector and are published. The mechanical step that matters for distortion is <strong>double application of percentile ranking</strong>: indicators are ranked against peers, then categories are ranked again. Missing values are often assigned zero, which penalizes the company. Historical scores are <strong>not final for the last five years</strong>: Refinitiv can revise past numbers retroactively, which weakens any clean time-series read.</p>
+
+    <h3>Own change, peers, and new entrants (OC, PC, NC)</h3>
+
+    <p>Benuzzi et al. decompose any change in a company's score into three parts: <strong>OC (own changes)</strong> — real movement in disclosed data; <strong>PC (peers changing)</strong> — zero-sum peer-relative motion as others improve or slip; <strong>NC (new companies)</strong> — expansion of the rating universe, which systematically helps incumbents because entrants tend to be smaller and less disclosed, clustering at the bottom.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Share of total absolute score variation explained by each component (Machinery, Oil, and Chemicals, 2012–2021; Benuzzi et al.)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Method</th>
+            <th scope="col">OC (own)</th>
+            <th scope="col">PC (peers)</th>
+            <th scope="col">NC (new firms)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Refinitiv-style</th>
+            <td>~41–45%</td>
+            <td>~26%</td>
+            <td>~33%</td>
+          </tr>
+          <tr>
+            <th scope="row">Performance Ratio (PR)</th>
+            <td>~83–91%</td>
+            <td colspan="2">balance (~9–17% combined, PC + NC)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Under Refinitiv's construction, <strong>over half</strong> of absolute score movement reflects methodology and universe dynamics, not the firm's own behavior. A different aggregation — the Performance Ratio, <code>PR = (Value − Min) / (Max − Min) × 100</code> — shifts most variation back into OC: scores move when the company's value moves or when the min/max in the sample moves, not when unrelated firms join the universe. PR stays highly correlated with Refinitiv (Kendall's τ ≈ 0.76; Pearson/Spearman ≈ 0.91) and has been shown to improve Sharpe ratios of momentum-style long-short portfolios in their sample. But PR fixes <strong>aggregation</strong>. It does not fix <strong>who supplies the data</strong> — self-disclosure remains the source.</p>
+
+    <div class="bar-compare" role="group" aria-label="Approximate share of total absolute variation from own changes (OC) under Refinitiv versus Performance Ratio">
+      <div class="bar-row"><span class="bar-label">Refinitiv OC</span><span class="bar-track"><span class="bar-fill" style="width: 43%"></span></span><span class="bar-pct">~43%</span></div>
+      <div class="bar-row"><span class="bar-label">PR OC</span><span class="bar-track"><span class="bar-fill" style="width: 87%"></span></span><span class="bar-pct">~87%</span></div>
+    </div>
+
+    <h3>One machinery firm, 2012→2021 (Benuzzi et al., Fig. 6)</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Illustrative walkthrough: net score gain with a large chunk from universe expansion</caption>
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Score 2012</th><td>53.37</td></tr>
+          <tr><th scope="row">From own improvements (OC)</th><td>+20.2</td></tr>
+          <tr><th scope="row">From peers improving faster (PC)</th><td>−13.8</td></tr>
+          <tr><th scope="row">From new companies entering universe (NC)</th><td>+17.2</td></tr>
+          <tr><th scope="row">Score 2021</th><td>76.95</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Net gain of 23.6 points — of which 17.2 came from who joined the universe, not from anything the company did.</p>
+
+    <h3>Structural pathologies</h3>
+
+    <ul>
+      <li><strong>Inner competition.</strong> Percentile ranking is zero-sum: if peers improve, your score can fall even when you improve too.</li>
+      <li><strong>NC inflation.</strong> Adding smaller, less-disclosed firms mechanically lifts incumbents.</li>
+      <li><strong>Rating stability paradox.</strong> Once a firm reaches A-rated territory, downgrades become rare — partly because NC dynamics inflate the pool, not because every firm keeps improving. Kathan et al. (2024) link this pattern to greenwashing risk when headline scores are high.</li>
+      <li><strong>Size bias.</strong> Larger firms entered the universe earlier and had longer to build disclosure; size correlates with score independent of underlying sustainability.</li>
+      <li><strong>Retroactive rewriting.</strong> Five-year revision windows undermine stable historical comparison.</li>
+    </ul>
+
     <p>This is not a failure of one provider's methodology. It is a structural consequence of how current ESG systems are designed:</p>
 
     <ul>
@@ -46,6 +121,12 @@
 
     <p>The result is a system that is company-centric by design and gameable by construction. A company that understands the scoring methodology can optimize its disclosures rather than its practices. Score and substance decouple.</p>
 
+    <blockquote>
+      <p>the inclusion of new, smaller entrants with more missing data can artificially inflate the scores of top-ranked companies — this is an incorrect framing, quite certain there is a weighting in place that normalizes companies' ESG scores with respect to their size</p>
+    </blockquote>
+
+    <p>Fair pushback — and it sharpens the point. Refinitiv does not size-weight the percentile ranking. The size bias is emergent: larger firms entered coverage first (S&P 500, FTSE 100) and have had more years to build disclosure practices. The correlation between market cap and ESG score is documented in the paper (Fig. 4), but it is not corrected for. Some providers incorporate size-adjusted comparisons within sub-industries; Refinitiv as studied here does not. The inflation effect is real precisely because it is uncontrolled.</p>
+
     <hr class="divider" />
 
     <h2>2. A different architecture</h2>
@@ -53,6 +134,29 @@
     <p>The core problem is informational: the parties with the most direct knowledge of a company's actual sustainability practices are not the parties who currently supply the data. A company's Scope 2 emissions are best attested to by its energy provider, not its sustainability department. Labor conditions are best attested to by workers, not by HR disclosures. Supply chain practices are best attested to by suppliers, not by procurement reports.</p>
 
     <p>The proposed architecture inverts this. Rather than companies reporting about themselves through a single administrative intermediary, all participants with direct epistemic access to relevant data contribute attestations directly to a shared, append-only ledger. The composite score is derived from this multi-party record.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Who can attest to what (illustrative)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Participant</th>
+            <th scope="col">Direct knowledge typically covers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Energy providers</th><td>Scope 2, delivered energy mix</td></tr>
+          <tr><th scope="row">Suppliers</th><td>Carbon intensity of goods, labor and sourcing practices</td></tr>
+          <tr><th scope="row">Workers</th><td>Labor conditions, safety, sentiment</td></tr>
+          <tr><th scope="row">Logistics partners</th><td>Transport emissions and practices</td></tr>
+          <tr><th scope="row">Community representatives</th><td>Local impact, relations</td></tr>
+          <tr><th scope="row">Shareholders</th><td>Governance sentiment, board accountability</td></tr>
+          <tr><th scope="row">Company</th><td>Scope 1, strategy, governance structure — plus synthesis of what others attest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The company remains one voice among several, not the sole source of truth.</p>
 
     <h3>Core properties</h3>
 
@@ -63,6 +167,34 @@
       <li><strong>Real-time computation.</strong> Scores reflect current attestations, not annual disclosure cycles. Material changes in practice are reflected in scores as they occur, not twelve months later.</li>
       <li><strong>Universal verifiability.</strong> Any observer — investor, regulator, journalist, employee, member of the public — can inspect the underlying attestations, the weighting formula, and the derived score. The system does not require trust in any single administrator because no single administrator exists.</li>
     </ul>
+
+    <blockquote>
+      <p>a blockchain is simply a ledger — companies and everyone else have used ledgers since time immemorial. the blockchain can just as well be a ledgerized piece of paper, or a postgres database. there are some components that differentiate it from a database (guarantees), but once again these are operationally defined, so we shall go with them</p>
+    </blockquote>
+
+    <p>Exactly right. The append-only ledger in this architecture is a record-keeping mechanism, not a technology position. What matters is the guarantee: no single administrator can revise the historical record. That property can be implemented in various ways — permissioned distributed ledgers, append-only databases with cryptographic audit trails — depending on the governance requirements of a specific deployment. What it eliminates is the unilateral rewrite capability that Refinitiv currently exercises.</p>
+
+    <h3>Performance Ratio vs. multi-party attestation</h3>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Two different kinds of fix</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">PR (re-aggregation)</th>
+            <th scope="col">Multi-party attestation (this proposal)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">What it fixes</th><td>Aggregation artifacts (NC, PC)</td><td>Source of data</td></tr>
+          <tr><th scope="row">Data source</th><td>Still company self-disclosure</td><td>Independent attestors</td></tr>
+          <tr><th scope="row">Who controls input</th><td>Still the company</td><td>No single party</td></tr>
+          <tr><th scope="row">Retroactive rewriting</th><td>Still possible if the vendor does it</td><td>Structurally ruled out on an append-only public record</td></tr>
+          <tr><th scope="row">Goodhart risk</th><td>Reduced, not eliminated</td><td>Measure and genuine improvement align when attestors are independent</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <hr class="divider" />
 
@@ -76,24 +208,39 @@
 
     <p>In a multi-party attestation system, hitting a worker sentiment metric requires actually improving conditions for workers, because workers are the ones reporting. A company cannot improve its worker sentiment score by issuing a press release. It has to change something workers experience directly. <strong>The gaming and the genuine improvement are, in this architecture, the same action.</strong></p>
 
+    <blockquote>
+      <p>public weights invite gaming — pushing back: game theory and incentive design will create a positive feedback loop between corporations and individuals participating in the hypothetical ESG system proposed</p>
+    </blockquote>
+
+    <p>The pushback is correct and the framing sharpens it. Goodhart's Law has a prerequisite that's often glossed over: it applies when the proxy measure is decoupled from the underlying phenomenon it's meant to track. In a company-controlled disclosure system, you can hit the metric without moving the reality. In a multi-party attestation system, the measure and the phenomenon are structurally coupled — participants are inside the system being scored. The gaming <em>is</em> the improvement. Public weights don't create a weakness; they create legible targets that require genuine change to hit.</p>
+
     <p>Public weights do not enable gaming — they make the system's priorities legible and give participants clear targets that require substantive change to hit. This is a positive feedback loop by design. The system does not rely on any participant being virtuous — it is structured so that accurate participation is also the rational one.</p>
 
     <p>A further property: <strong>the accuracy of the score does not depend on the cooperation of the entity being scored.</strong> If a company declines to submit disclosures, the energy provider still attests to delivered energy mix, workers still report conditions, suppliers still record transactions. The company's non-participation cannot suppress the signal.</p>
 
+    <blockquote>
+      <p>the ESG scores are transparent and real-time — this keeps both companies and individuals/stakeholders/supply chain participants accountable bidirectionally. at the moment ESG scores are quite "company-centric" and sourced by design. this is specifically what i was attempting to get at</p>
+    </blockquote>
+
+    <p>Bidirectionality is the key word. The current architecture is a one-way disclosure: company reports, agency scores, investor reads. What the ledger enables is a system where the score is visible to everyone who contributes to it — workers, suppliers, logistics partners — and where their contributions are permanently on the record. That changes the dynamic from audit theater to genuine accountability. The score is no longer something a company receives; it is something the whole supply chain continuously produces and can read.</p>
+
     <hr class="divider" />
 
-    <h2>4. On the role of the ledger</h2>
+    <h2>4. The healthcare parallel: Truveta and the limits of de-identification</h2>
 
-    <p>The append-only ledger in this architecture is a record-keeping mechanism, not a technology position. The meaningful properties it provides are:</p>
+    <p>The structural critique of ESG scoring — that accuracy requires involving the people closest to the underlying phenomenon — has a direct analogue in healthcare data. Truveta operates a model that is in some ways the medical equivalent of Refinitiv: a centralized aggregator working from institutional data use agreements and de-identification rather than patient-controlled disclosure. The aggregate analytics are useful; the tradeoff is that patients have no direct visibility into how their data is used, and the scoring mechanism (in this case, the research outputs) does not depend on patient participation or consent beyond the institutional level.</p>
 
-    <ul>
-      <li>No single administrator can revise historical records.</li>
-      <li>All participants write to the same shared record under consistent rules.</li>
-      <li>Provenance of each attestation is cryptographically attributable.</li>
-      <li>The record is publicly readable without requiring permission from any participant.</li>
-    </ul>
+    <p>A ZKP-mediated architecture for healthcare data would invert this in much the same way the proposed ESG architecture inverts company-centric disclosure. Patients become the prover. Researchers become the verifier. The patient proves a relevant condition — "I have undergone treatment X", "I meet eligibility criterion Y" — without disclosing the underlying record. The research gets what it needs; the patient retains control.</p>
 
-    <p>These properties can be implemented in various ways — permissioned distributed ledgers, append-only databases with cryptographic audit trails, or other mechanisms — depending on the governance requirements of a specific deployment. The design choice that matters is the guarantee, not the specific implementation.</p>
+    <blockquote>
+      <p>unsure if [Truveta is] utilizing zero-knowledge proofs as it might be a bit overkill for the business requirement, although it could be an interesting approach — not telling them what to do, it's not my company nor business. what i'm getting at is a methodology by which patients can comfortably share their sensitive HIPAA data with researchers, potentially get paid for it, and sleep well knowing their information is not being utilized maliciously</p>
+    </blockquote>
+
+    <p>Whether ZKPs are strictly necessary for Truveta's current aggregate analytics use case is a fair question — de-identification and institutional agreements can be sufficient for population-level research. What ZKPs enable that de-identification does not is <strong>patient sovereignty over individual-level queries</strong>: the ability to prove a specific condition without revealing anything else, and to revoke that proof. Blockchain-anchored consent logs extend this to dynamic consent — a patient can grant access to a specific data point for a specific duration, and revoke it, and the log is append-only and permanently auditable. The payment layer follows naturally: if the patient holds the key to a verifiable claim, there is a mechanism to compensate them directly for each valid proof.</p>
+
+    <p>The literature is active here. Recent work (MediChainAI, 2025) describes SSI (Self-Sovereign Identity) combined with permissioned blockchain and ZKP for exactly this use case — patients with full ownership over health data, selective sharing with researchers under defined constraints, smart contracts enforcing consent terms. The architecture is not overkill; it is proportionate to the sensitivity of the data and the asymmetry of the current system.</p>
+
+    <p>The ESG and healthcare parallels are not incidental. Both are systems where centralized aggregation of third-party-reported data produces scores or outputs that affect real people who had no direct voice in the process. The fix in both cases is the same in principle: involve the people closest to the underlying phenomenon, make their participation legible and compensable, and build the record so that no single administrator can revise or suppress it.</p>
 
     <hr class="divider" />
 
@@ -103,7 +250,19 @@
 
     <p>It does not require perfect attestor behavior. Individual attestors will sometimes misreport. The system's integrity does not rest on any single attestor's honesty — it rests on the aggregate consistency of independent reports. Coordinated misreporting across independent attestors is both costly and visible: divergence between simultaneous attestations from different participants is structurally anomalous and detectable by any observer.</p>
 
+    <blockquote>
+      <p>the loss function are incorrect (inaccurate, either intentionally or not) data reports by participants in this hypothetical ESG system</p>
+    </blockquote>
+
+    <p>Cleaner than framing it as an optimization target. The system is adversarial-robust rather than optimization-driven: the question is not how to minimize a loss function, but how to make dishonest reporting costly and detectable. Fraudulent attestations require coordinating misreporting across independent participants — the energy provider, the workers, and the logistics partner would all need to coordinate false reports simultaneously, and their reports would need to be internally consistent. Because all attestations are on the same public ledger, structural inconsistency is visible to any observer without anyone needing to actively detect it. The openness does the work.</p>
+
     <p>It does not require resolving all methodological debates about what ESG should measure. Weights are tunable parameters, subject to public deliberation and empirical calibration. A well-designed system can surface multiple composite views of the same underlying attestation data rather than collapsing them into a single opaque number.</p>
+
+    <blockquote>
+      <p>the weights should be public — there is no benefit to companies or individuals for keeping these values hidden, or is there? (thinking emoji, sarcasm)</p>
+    </blockquote>
+
+    <p>The sarcasm lands because the beneficiaries of hidden weights are not abstract. They are rating agencies protecting a proprietary methodology as a commercial asset, and companies that have reverse-engineered the weights and would rather competitors not learn the same tricks. Neither of those is a public interest argument. In a multi-party attestation system the case for opacity collapses entirely: the formula is what makes the score auditable, and auditing is the whole point.</p>
 
     <hr class="divider" />
 
@@ -115,6 +274,8 @@
 
     <p>This is not a radical proposal. It is an application of basic principles: measure things with the instruments closest to them, make the measurement process transparent, and ensure that no single party controls the record. The technology to implement it exists. The incentive alignment is sound. What remains is the will to prefer accuracy over convenience.</p>
 
+    <p>The same logic applies wherever centralized aggregation of third-party-reported data produces consequential outputs — healthcare research, supply chain compliance, credit scoring. The ledger is not a solution in search of a problem. It is a record-keeping guarantee that the problem of single-administrator control makes newly necessary.</p>
+
     <hr class="divider" />
 
     <section class="sources-footnote" aria-label="Sources">
@@ -125,6 +286,14 @@
       <p>Berg, F., Koelbel, J. F., &amp; Rigobon, R. (2022). Aggregate confusion: The divergence of ESG ratings. <em>Review of Finance</em>, 26(6), 1315&ndash;1344.</p>
 
       <p>Refinitiv / LSEG. (2023). Environmental, social and governance scores from LSEG. <a href="https://www.lseg.com/content/dam/data-analytics/en_us/documents/methodology/lseg-esg-scores-methodology.pdf">methodology document</a></p>
+
+      <p>Kathan, M. C., Utz, S., Dorfleitner, G., Eckberg, J., &amp; Chmel, L. (2024). What you see is not what you get: ESG scores and greenwashing risk. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4985314">SSRN 4985314</a></p>
+
+      <p>Benuzzi et al. MediChainAI (2025). Ethical AI in Healthcare: Integrating Zero-Knowledge Proofs and Smart Contracts for Transparent Data Governance. <em>Bioengineering</em>, 12(11), 1236. <a href="https://www.mdpi.com/2306-5354/12/11/1236">mdpi.com</a></p>
+
+      <p>Lohachab, A. &amp; Dumontier, M. (2025). Privacy preservation in blockchain-based healthcare data sharing: A systematic review. <em>Peer-to-Peer Networking and Applications</em>, 18(6), 302.</p>
+
+      <p>Truveta. EHR data and analytics. <a href="https://www.truveta.com/">truveta.com</a></p>
     </section>
 
   </main>

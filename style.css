@@ -85,6 +85,119 @@ pre code {
   border-bottom: none;
 }
 
+/* Tables, code blocks, and simple bar comparisons — musings; light background for contrast */
+main.article pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.88em;
+  line-height: 1.4;
+  padding: 0.75em 1em;
+  margin: 1em 0 1.2em;
+  background: #e8e6e1;
+  border: 1px solid #ccc;
+  overflow-x: auto;
+  color: #222;
+}
+
+main.article .table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1em 0 1.25em;
+}
+
+/* Photos / figures in musings — max width for readability; intrinsic dimensions on <img> reduce layout shift */
+main.article figure.article-figure {
+  margin: 1.75em auto;
+  max-width: min(100%, 40rem);
+}
+
+main.article figure.article-figure img {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 4px;
+  border: 1px solid #c8c6c1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+main.article table {
+  width: 100%;
+  min-width: 16em;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  background: #faf9f7;
+  color: #222;
+}
+
+main.article caption {
+  caption-side: top;
+  text-align: left;
+  font-size: 0.88em;
+  color: #555;
+  margin-bottom: 0.5em;
+  line-height: 1.35;
+}
+
+main.article th,
+main.article td {
+  border: 1px solid #c8c6c1;
+  padding: 0.45em 0.55em;
+  text-align: left;
+  vertical-align: top;
+}
+
+main.article thead th {
+  background: #e8e6e1;
+  color: #222;
+  font-weight: bold;
+}
+
+main.article tbody th[scope="row"] {
+  font-weight: bold;
+  background: #f2f0ec;
+  color: #333;
+}
+
+/* Text-only “bar chart” for comparisons (no images; screen-reader friendly with visible %) */
+main.article .bar-compare {
+  margin: 1em 0 1.5em;
+  font-size: 0.95em;
+}
+
+main.article .bar-row {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 10rem) 1fr minmax(2.5rem, 3.5rem);
+  gap: 0.5em 0.75em;
+  align-items: center;
+  margin-bottom: 0.4em;
+}
+
+main.article .bar-label {
+  color: #444;
+}
+
+main.article .bar-track {
+  height: 0.75rem;
+  background: #e0ddd6;
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid #c8c6c1;
+}
+
+main.article .bar-fill {
+  display: block;
+  height: 100%;
+  background: #666;
+  border-radius: 1px;
+}
+
+main.article .bar-pct {
+  font-variant-numeric: tabular-nums;
+  color: #333;
+  text-align: right;
+}
+
 /* ─── header ────────────────────────────────────────────────────────────────── */
 
 header {

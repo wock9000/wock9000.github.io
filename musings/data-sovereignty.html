@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data sovereignty, proof without disclosure</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <p class="nav-back"><a href="../">&larr; musings</a></p>
+    <h1 class="title">Data sovereignty, proof without disclosure</h1>
+    <p class="subtitle">On healthcare records, ESG attestation, and the geometry of trust</p>
+    <p class="date">2026-03</p>
+  </header>
+
+  <hr class="divider" />
+
+  <main class="article">
+
+    <p>
+      Two problems that look unrelated share the same structure. In one, a patient wants researchers to use her health data
+      without being able to identify her. In the other, an investor wants to know whether a company's sustainability score
+      reflects what the company actually does, or just how well it has learned to fill out forms. Both problems are about
+      the gap between a claim and the underlying reality — and about who gets to verify that gap is closed.
+    </p>
+
+    <p>
+      Zero-knowledge proofs close that gap mathematically. Append-only multi-party ledgers close it institutionally.
+      Neither is sufficient alone. Together, they describe something that does not yet exist at scale but is not far off:
+      a world where sensitive data can be made useful without being made visible, and where composite scores can be made
+      trustworthy without being made opaque.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>The proof primitive</h2>
+
+    <p>
+      Classical authentication proves knowledge of a secret by revealing it, or at least a transformation of it. A zero-knowledge
+      proof does something stranger: it convinces a verifier that a statement is true while revealing nothing beyond that fact.
+      Three properties are required simultaneously — <strong>completeness</strong> (true statements can always be proven),
+      <strong>soundness</strong> (false statements cannot, except with probability approaching zero), and
+      <strong>zero-knowledge</strong> (nothing leaks beyond validity).
+    </p>
+
+    <blockquote>
+      <p>
+        The cave intuition: a prover claims to know a secret passphrase that opens a door between two tunnels. The verifier
+        waits outside, calls out which tunnel to exit from. The prover, knowing the passphrase, can always comply. After enough
+        rounds, the probability of sustained lucky guessing is negligible — yet the verifier has learned nothing about the
+        passphrase itself. Only: the prover almost certainly knows it.
+      </p>
+    </blockquote>
+
+    <p>
+      Interactive proofs like this are impractical for most deployed systems, so the field moved to non-interactive variants.
+      <strong>zk-SNARKs</strong> collapse the challenge-response into a single message using cryptographic hash functions and
+      a common reference string; they are succinct and fast to verify but often require a trusted setup whose secrecy must be
+      maintained. <strong>zk-STARKs</strong> remove the trusted setup (transparent parameters, hence the T), are post-quantum
+      resistant, and produce larger proofs. <strong>PLONK</strong> and related families offer universal setups reusable across
+      different circuits. All three show up in Ethereum L2s, private transaction schemes like Zcash, and emerging identity
+      infrastructure.
+    </p>
+
+    <p>
+      Applied to storage, ZKPs handle the authentication layer: a provider can verify that you know a password without you
+      transmitting it, and without the provider storing anything that could be stolen and replayed. The data layer is handled
+      separately by client-side encryption — your files are encrypted before leaving your device, so the provider's servers
+      hold ciphertext they cannot read regardless of legal compulsion or breach.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>Healthcare: the patient as prover</h2>
+
+    <p>
+      The healthcare application makes the power of ZKPs concrete. A researcher wants to know whether a patient cohort has
+      undergone a specific treatment. Traditional approaches require either full record disclosure (too much) or institutional
+      de-identification (imperfect, reversible, and not patient-controlled). A ZKP approach inverts this: the patient proves
+      to the researcher that the relevant conditions are met — "I have undergone treatment X," "I satisfy criterion Y for
+      this study" — without the researcher ever seeing the underlying record.
+    </p>
+
+    <p>
+      The patient is the prover. The researcher is the verifier. What the researcher receives is a proof, not data. The
+      proof is machine-verifiable and cryptographically binding. The record stays with the patient.
+    </p>
+
+    <p>
+      Recent literature pairs this with permissioned blockchains for consent management: the patient's consent to share
+      specific attributes is logged on-chain, revocable in real time, and auditable by regulators without exposing the
+      underlying data. Off-chain encrypted storage (IPFS or similar) holds the actual records; the chain holds only hashes
+      and consent state. Layer-2 rollups (zk-Rollups specifically) provide the throughput that health record systems require.
+    </p>
+
+    <h3>Truveta and the alternative model</h3>
+
+    <p>
+      Truveta's approach to the same problem is instructive precisely because it is different. They aggregate EHR data from
+      over 130 million patients through institutional de-identification and data use agreements — not patient-verifiable
+      cryptographic proofs. This works for aggregate analytics at scale: researchers get rich, representative cohorts without
+      encountering individual records. The tradeoff is that patients have no cryptographic guarantee about how their data is
+      used, and the de-identification process, however rigorous, is a statistical not a mathematical guarantee.
+    </p>
+
+    <p>
+      Neither approach is universally better. Truveta's model is deployable today with existing infrastructure and regulatory
+      frameworks. The ZKP model is closer to patient sovereignty in the fullest sense but requires infrastructure that is
+      still maturing. The interesting question is whether they converge — whether patient-controlled cryptographic proofs
+      become the interface through which aggregate analytics pipelines are fed, rather than a competing paradigm.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>ESG: the company as prover — and why that fails</h2>
+
+    <p>
+      The ESG problem is structurally similar but the prover is the wrong party. Under current methodology, the company
+      proves to the rating agency that its practices meet certain standards — by self-reporting. The rating agency aggregates
+      these self-reports, normalizes them against peers, and produces a score. The investor trusts the score.
+    </p>
+
+    <p>
+      This is a three-party trust chain where the entity with the most to gain from favorable scores controls the primary
+      input to those scores. The mathematical analogy is a prover who gets to write their own challenge. The proof is not
+      zero-knowledge — it is not even a proof. It is a disclosure.
+    </p>
+
+    <p>
+      Empirical research makes the consequences concrete. Benuzzi et al. (2025) decompose year-over-year ESG score changes
+      into three components: a company's own changes in disclosed data (OC), changes in how peer companies disclose (PC),
+      and the expansion of the rating universe as new firms enter the sample (NC). Across three sectors from 2012 to 2021,
+      less than 45% of total absolute variation is attributable to OC. The remaining 55% is methodology artifact —
+      the score moves because of who joined the universe or how peers shifted, not because of what the company did.
+    </p>
+
+    <p>
+      The NC effect alone is striking: when smaller, less-disclosed firms enter the Refinitiv universe, they cluster at
+      the bottom of the distribution, mechanically lifting all incumbents' percentile ranks. One machinery-sector company in
+      the paper gained 17.2 points from this effect alone over nine years — points that had nothing to do with its
+      actual environmental or social practices.
+    </p>
+
+    <blockquote>
+      <p>
+        A score that improved. Nothing else did.
+      </p>
+    </blockquote>
+
+    <p>
+      The Performance Ratio (PR) alternative proposed by Benuzzi et al. fixes the aggregation: under PR, scores move when
+      a company's own values change, not when the peer universe shifts. But PR still accepts company self-disclosure as the
+      input. The proof is cleaner; the prover is still the interested party.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>The architecture that follows</h2>
+
+    <p>
+      The structural fix is to change who supplies the data. Companies are not the parties with the most direct knowledge of
+      their own sustainability practices — their workers are, their suppliers are, their energy providers are, the communities
+      adjacent to their operations are. These parties have less incentive to distort and more direct observational access.
+      Making them the attestors rather than passive subjects changes the information architecture entirely.
+    </p>
+
+    <p>
+      An append-only public ledger is the record-keeping mechanism this requires. Not because blockchain is magical, but
+      because the guarantee matters: no single administrator should be able to revise historical attestations after the fact.
+      Refinitiv currently can, and does, revise historical ESG scores — the paper documents a five-year revision window.
+      A ledger where writes are permanent and provenance is cryptographically attributable makes retroactive manipulation
+      structurally impossible rather than merely prohibited.
+    </p>
+
+    <h3>On public weights</h3>
+
+    <p>
+      The usual objection to transparent scoring is that public weights invite gaming. If participants know that worker
+      sentiment carries 15% weight, won't they optimize for the metric rather than the underlying reality?
+    </p>
+
+    <p>
+      This concern is correct for single-source systems. In a company-controlled disclosure regime, the company can hit
+      a metric without changing the underlying phenomenon — reframe a policy document, adjust a reporting boundary,
+      commission a favorable audit. The measure and the reality decouple.
+    </p>
+
+    <p>
+      In a multi-party attestation system, the concern inverts. Improving a worker sentiment score requires improving
+      conditions workers actually experience, because workers are the ones reporting. There is no substitute for the
+      underlying reality when the party with direct access to that reality is the one providing the proof. The gaming
+      and the genuine improvement become indistinguishable — which is precisely the point.
+    </p>
+
+    <blockquote>
+      <p>
+        Public weights in a multi-party system don't enable gaming. They make the system's priorities legible.
+        Workers who know their attestations carry real weight have a reason to attest carefully. Companies who know
+        which dimensions matter have specific, verifiable targets to hit. The feedback loop runs in the right direction.
+      </p>
+    </blockquote>
+
+    <h3>What the system does not require</h3>
+
+    <p>
+      It does not require full corporate transparency. A company need not disclose its energy procurement contracts
+      if the utility is independently attesting to the delivered energy mix. Competitive confidentiality and score
+      accuracy coexist because the information surface has multiple independent access points.
+    </p>
+
+    <p>
+      It does not require perfect attestors. Individual workers will sometimes misreport; suppliers have their own
+      incentives. The system's integrity rests on aggregate consistency across independent sources, not individual
+      honesty. Coordinated misreporting across independent attestors is both expensive to maintain and structurally
+      visible — divergence between simultaneous attestations is anomalous and detectable without anyone actively
+      investigating. The system surfaces inconsistencies passively.
+    </p>
+
+    <p>
+      It does not require resolving every methodological debate about what sustainability means. Weights are parameters
+      subject to deliberation and empirical calibration. Multiple composite views of the same attestation data can coexist.
+      What is non-negotiable is that the underlying record is public, the formula is auditable, and no single party
+      controls either.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>The convergence</h2>
+
+    <p>
+      Healthcare and ESG are both cases where the entity whose behavior is being evaluated has historically controlled
+      the primary evidentiary channel. Patients' health data flows through providers and insurers before it reaches
+      researchers. Companies' sustainability data flows through their own disclosure teams before it reaches rating agencies.
+      In both cases, the solution involves redistributing epistemic authority — giving the parties with direct observational
+      access a mechanism to contribute that access to the record directly, without requiring the intermediary's cooperation
+      or the subject's consent.
+    </p>
+
+    <p>
+      Zero-knowledge proofs are the tool that makes this redistribution legible: they allow a claim to be verified without
+      the underlying data being exposed. The append-only ledger is the infrastructure that makes it durable: it ensures
+      the record of attestations cannot be quietly revised after the fact. Together they describe a class of systems where
+      accuracy does not depend on the honesty of the most interested party.
+    </p>
+
+    <p>
+      We are not there yet. The healthcare ZKP infrastructure is largely in research and pilots. The ESG multi-party
+      attestation architecture exists as a proposal, not a deployed system. But the underlying mathematics is not speculative,
+      the institutional logic is sound, and the failures of the current arrangements are well-documented. What remains,
+      in both domains, is the institutional will to prefer accuracy over convenience — which is, historically, a lagging
+      indicator.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>A note on method</h2>
+
+    <p>
+      The discussion that produced these notes moved between cloud storage tiers, ZKP mechanics, Truveta's data model,
+      HIPAA constraints, ESG methodology critique, ledger design, and incentive theory — not as isolated topics but as
+      facets of a single question about what it means to verify something without exposing it. The following exchange
+      captures something of that texture.
+    </p>
+
+    <div class="dialogue">
+
+      <div class="dialogue-turn dialogue-q">
+        <p>
+          Zero-knowledge options — these are pretty cool. Could we get a short description on how zero-knowledge circuits
+          work in attesting the authenticity of the encapsulated data without "peering in"? Quite a powerful subfield.
+          One application that comes to mind is sharing medical patient data with researchers — unsure if [Truveta is]
+          utilizing zero-knowledge proofs as it might be a bit overkill for the business requirement, although it could
+          be an interesting approach — a methodology by which patients can comfortably share their sensitive HIPAA data
+          with researchers, potentially get paid for it, and sleep well knowing their information is not being utilized
+          maliciously.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-a">
+        <p>
+          The key insight is that ZKPs replace brand-based promises with mathematical guarantees. You don't have to trust
+          the provider to keep data safe — it is safe by virtue of the implementation. The authentication problem is subtle:
+          the provider doesn't store your password, so how do they verify it's correct? Answer: a zero-knowledge proof lets
+          the provider verify you know the key without requiring you to reveal it.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-q">
+        <p>
+          The proxy measure is decoupled from the underlying phenomenon — in this case, they're quite literally coupled.
+          ESG reports and the participants in the system are interconnected in terms of outcomes. There is no benefit to
+          participants to introduce negative outcomes to the system. They are incentivized to participate positively —
+          reporting the truth, i.e., the point behind the ESG system.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-a">
+        <p>
+          Goodhart's Law has a prerequisite that's often glossed over: it applies when the proxy measure is decoupled from
+          the underlying phenomenon. "When a measure becomes a target it ceases to be a good measure" — but only when you
+          can hit the measure without moving the underlying. If the measure is constructed such that you can't move it
+          without moving the underlying, Goodhart doesn't bite. Multi-party attestation with public weights is specifically
+          designed to close that gap.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-q">
+        <p>
+          The design implication is that you probably want attestor independence metrics to be part of the public
+          information surface from the start — not just what attestors report, but how correlated their reports are with
+          the company's own disclosures, which is itself a red flag signal. Yes — company disclosures and the data the
+          respective ESG reports were composed from should be disclosed transparently. It's all right for companies to
+          not disclose everything — that's in their rights. What's not okay is individuals not being aware of how the
+          score is composed, or whether they can verify its validity.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-a">
+        <p>
+          That property — that accuracy doesn't depend on the cooperation of the entity being scored — is what distinguishes
+          this from every existing ESG methodology, including the Performance Ratio the paper proposes. The company's
+          non-participation cannot suppress the signal, because the company is not the sole input.
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-q">
+        <p>
+          The system doesn't break if a company decides to game it, because the company is not the sole input.
+          <em>(That's a, uh, great closing line — kidding.)</em>
+        </p>
+      </div>
+
+      <div class="dialogue-turn dialogue-a">
+        <p>
+          Fair — it was a bit too tidy. The realtime point is the right correction. "Lived experience" as a falsification
+          mechanism implies a temporal gap. What the realtime architecture actually provides is something stronger: continuous
+          reconciliation across independent data streams. The falsification isn't "a worker notices a discrepancy and reports
+          it" — it's that divergence between simultaneous attestations from different participants in the same system is
+          automatically visible and statistically anomalous. The system surfaces inconsistencies passively. Fraud requires
+          coordinated inconsistency across independent attestors, and coordinated inconsistency is visible precisely because
+          all attestations are on the same public ledger.
+        </p>
+      </div>
+
+    </div>
+
+    <hr class="divider" />
+
+    <section class="sources-footnote" aria-label="Sources">
+      <p>Benuzzi, M., Bax, K., Paterlini, S., &amp; Taufer, E. (2025). Chasing ESG performance: How methodologies shape outcomes. <em>International Review of Financial Analysis</em>, 104, 104239. <a href="https://doi.org/10.1016/j.irfa.2025.104239">doi.org/10.1016/j.irfa.2025.104239</a></p>
+      <p>Lohachab, A. &amp; Dumontier, M. (2025). Privacy preservation in blockchain-based healthcare data sharing: A systematic review. <em>Peer-to-Peer Networking and Applications</em>, 18(6), 302.</p>
+      <p>Nature Scientific Reports (2026). Secure, scalable, and interoperable healthcare data exchange using layer-2 ZK-rollups, smart contracts, and IPFS. <a href="https://www.nature.com/articles/s41598-026-35289-9">nature.com</a></p>
+      <p>MDPI Bioengineering (2025). Ethical AI in Healthcare: Integrating Zero-Knowledge Proofs and Smart Contracts for Transparent Data Governance. <a href="https://www.mdpi.com/2306-5354/12/11/1236">mdpi.com</a></p>
+      <p>Chainlink Education Hub. Zero-knowledge encryption. <a href="https://chain.link/education-hub/zero-knowledge-encryption">chain.link</a></p>
+      <p>Zhang, F. et al. (2019). Zero knowledge proofs for cloud storage integrity checking. arXiv:1912.00446. <a href="https://arxiv.org/abs/1912.00446">arxiv.org</a></p>
+      <p>Truveta. <a href="https://www.truveta.com/">truveta.com</a></p>
+      <p>See also: <a href="esg-proposal.html">Toward Truthful ESG</a> and <a href="zero-knowledge-and-storage.html">Zero-knowledge proofs and encrypted storage</a> on this site.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <hr class="divider" />
+    <p class="footer-note"></p>
+  </footer>
+
+  <script defer src="../assets/day-bg.js"></script>
+</body>
+</html>

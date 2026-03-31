@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero-knowledge proofs and encrypted storage</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <p class="nav-back"><a href="../">&larr; musings</a></p>
+    <h1 class="title">Zero-knowledge proofs and encrypted storage</h1>
+    <p class="subtitle">Notes on cloud tiers, encryption models, and proof without disclosure</p>
+    <p class="date">2026-03</p>
+  </header>
+
+  <hr class="divider" />
+
+  <main class="article">
+
+    <h2>Encryption model taxonomy</h2>
+
+    <div class="table-wrap">
+      <table>
+        <caption>How providers relate to your keys</caption>
+        <thead>
+          <tr>
+            <th scope="col">Model</th>
+            <th scope="col">What it means</th>
+            <th scope="col">Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Server-side (provider holds keys)</th>
+            <td>AES at rest and TLS in transit; provider can decrypt.</td>
+            <td>Google Drive, iCloud defaults, Dropbox, OneDrive</td>
+          </tr>
+          <tr>
+            <th scope="row">E2E with opt-in</th>
+            <td>Client-side encryption exists but is off by default.</td>
+            <td>iCloud + Advanced Data Protection; pCloud + Crypto (paid)</td>
+          </tr>
+          <tr>
+            <th scope="row">Zero-knowledge / true E2E</th>
+            <td>Provider never has keys; cannot decrypt mathematically.</td>
+            <td>Proton Drive, Sync.com, MEGA, Filen, Tresorit</td>
+          </tr>
+          <tr>
+            <th scope="row">Self-hosted + client-side</th>
+            <td>You control the backend; you encrypt before upload.</td>
+            <td>Rclone crypt + any S3/B2/SFTP backend; Nextcloud + E2EE</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>iCloud and Google Drive</h2>
+
+    <p>
+      <strong>iCloud with Advanced Data Protection (ADP)</strong> — toggled under Apple ID → iCloud → Advanced Data Protection —
+      end-to-end encrypts most categories (Drive, Photos, Notes, etc.). Apple cannot recover data if you lose the recovery key.
+      ADP is off by default. Pricing is modest; the tradeoff is ecosystem lock-in and weak cross-platform support (Windows/Android).
+      There is no personal iCloud Drive API for arbitrary automation.
+    </p>
+
+    <p>
+      <strong>Google Drive</strong> offers no consumer end-to-end option: Google holds keys, integrates scanning and model training
+      surfaces, and exposes an excellent API across platforms. That makes it appropriate for non-sensitive, collaboration-heavy,
+      or intentionally public material — and a poor fit for operational secrets.
+    </p>
+
+    <p>
+      A practical split: <strong>iCloud + ADP</strong> for everyday sync on Apple devices; <strong>Drive</strong> only for
+      non-sensitive tiers. Sensitive operational data should not pass through Drive.
+    </p>
+
+    <h2>Zero-knowledge providers</h2>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Selected consumer-facing options — verify pricing and terms</caption>
+        <thead>
+          <tr>
+            <th scope="col">Provider</th>
+            <th scope="col">Free tier</th>
+            <th scope="col">Model</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Proton Drive</th><td>5 GB</td><td>True ZK / E2E</td><td>Swiss jurisdiction; open-source client; often slower sync</td></tr>
+          <tr><th scope="row">MEGA</th><td>20 GB</td><td>E2E</td><td>Past crypto issues patched; very fast sync among ZK options</td></tr>
+          <tr><th scope="row">Sync.com</th><td>5 GB</td><td>Zero-knowledge</td><td>Canada; Office needed for in-browser editing on some plans</td></tr>
+          <tr><th scope="row">Filen</th><td>10 GB (promos vary)</td><td>Client-side E2E</td><td>Germany; smaller ecosystem</td></tr>
+          <tr><th scope="row">Tresorit</th><td>Trial-heavy</td><td>E2E</td><td>Strong security; limited free tier</td></tr>
+          <tr><th scope="row">pCloud</th><td>10 GB</td><td>ZK via paid Crypto</td><td>E2E is an add-on</td></tr>
+          <tr><th scope="row">Google Drive</th><td>15 GB</td><td>None (consumer)</td><td>Provider-held keys</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Self-hosted pattern: Rclone crypt</h2>
+
+    <p>
+      For sensitive operational data, <strong>Rclone</strong> with a <strong>crypt</strong> remote over Backblaze B2,
+      S3-compatible storage, or SFTP keeps ciphertext at the provider and keys local. Cost tracks commodity object storage;
+      there is no glossy sync UI — only CLI or scripts — which is often acceptable for backups and archives.
+    </p>
+
+    <pre><code># After `rclone config`: define B2 (or other) backend, then add crypt remote on top.
+# Sync encrypts locally; remote sees only blobs.
+
+rclone sync /local/sensitive remote-crypt:path</code></pre>
+
+    <p>
+      Encrypt the Rclone config file if it holds credentials. For a hybrid: Proton (or similar) for interactive access,
+      Rclone + B2 for cold or high-sensitivity archives.
+    </p>
+
+    <h2>Tiering data</h2>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Rule-of-thumb routing</caption>
+        <thead>
+          <tr>
+            <th scope="col">Class</th>
+            <th scope="col">Examples</th>
+            <th scope="col">Direction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Highly sensitive</th><td>Keys, strategy, infra config</td><td>Rclone crypt + B2, or VeraCrypt + any backend</td></tr>
+          <tr><th scope="row">Operational</th><td>Code, research, investor docs</td><td>iCloud + ADP or Proton-tier tools</td></tr>
+          <tr><th scope="row">Personal media</th><td>Photos, family files</td><td>Ecosystem-appropriate (iCloud, or cross-platform alternatives)</td></tr>
+          <tr><th scope="row">Archive</th><td>Backups, history</td><td>B2, Hetzner Storage Box, etc.</td></tr>
+          <tr><th scope="row">Non-sensitive / collaborative</th><td>Shareable drafts</td><td>Drive, GCS, or similar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>What zero-knowledge proofs are</h2>
+
+    <p>
+      Classical authentication often proves knowledge of a secret by revealing it (or a static hash). A ZKP aims to convince a
+      verifier that a statement holds while revealing nothing beyond validity. All three properties matter:
+      <strong>completeness</strong> (true statements can be proven), <strong>soundness</strong> (false statements cannot,
+      except with negligible probability), and <strong>zero-knowledge</strong> (no extra information leaks).
+    </p>
+
+    <blockquote>
+      <p>
+        Cave intuition (classic interactive proof): the prover claims to know a secret that opens a door between two tunnels.
+        The verifier waits outside, challenges which tunnel exit to use. After enough rounds, chance success is negligible —
+        yet the verifier never learns the secret itself.
+      </p>
+    </blockquote>
+
+    <p>
+      Interactive proofs are unwieldy on the web, so deployed systems use <strong>non-interactive</strong> arguments:
+      <strong>zk-SNARKs</strong> (succinct; often need a trusted setup for common reference strings),
+      <strong>zk-STARKs</strong> (transparent setup; larger proofs; post-quantum friendly),
+      and families such as <strong>PLONK</strong> (universal setup). These show up in Zcash, many Ethereum L2s, and emerging identity flows.
+    </p>
+
+    <p>
+      Applied to storage: ZKPs can verify passwords without transmitting them, help check ciphertext integrity without exposing content,
+      and support key-wrapping when sharing — always alongside client-side encryption, not as a substitute for it.
+    </p>
+
+    <h2>Other domains (brief)</h2>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Where ZKPs show up (non-exhaustive)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Domain</th>
+            <th scope="col">Application</th>
+            <th scope="col">Maturity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Cloud auth</th><td>Verify password knowledge without sending it</td><td>Deployed in ZK-oriented providers</td></tr>
+          <tr><th scope="row">Integrity</th><td>Prove data intact without revealing content</td><td>Research / emerging</td></tr>
+          <tr><th scope="row">Chains</th><td>Private transfers, L2 validity</td><td>Deployed</td></tr>
+          <tr><th scope="row">Healthcare</th><td>Selective disclosure of conditions under HIPAA constraints</td><td>Pilots / literature</td></tr>
+          <tr><th scope="row">Identity</th><td>Age, citizenship proofs without full ID reveal</td><td>Emerging</td></tr>
+          <tr><th scope="row">ESG / attestation</th><td>Prove metric validity without raw underlying data</td><td>Proposed (see <a href="esg-proposal.html">Toward Truthful ESG</a>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Healthcare deployments in the literature often pair off-chain encrypted storage with on-chain hashes, consent contracts,
+      and sometimes L2 rollups — permissioned consensus is common where HIPAA and open participation conflict. Commercial
+      aggregates such as Truveta use de-identification and institutional agreements rather than patient-verifiable ZKPs; the
+      architecture is a different tradeoff, not a proof that ZK is unnecessary everywhere.
+    </p>
+
+    <hr class="divider" />
+
+    <section class="sources-footnote" aria-label="Sources">
+      <p>Codemotion Magazine. Zero-knowledge cloud storage: What is it and why you need it now. <a href="https://www.codemotion.com/magazine/devops/cloud/zero-knowledge-cloud-storage-what-is-it-and-why-you-need-it-now/">codemotion.com/magazine</a></p>
+      <p>Chainlink Education Hub. Zero-knowledge encryption. <a href="https://chain.link/education-hub/zero-knowledge-encryption">chain.link/education-hub/zero-knowledge-encryption</a></p>
+      <p>Zhang, F. et al. (2019). Zero knowledge proofs for cloud storage integrity checking. arXiv:1912.00446. <a href="https://arxiv.org/abs/1912.00446">arxiv.org/abs/1912.00446</a></p>
+      <p>Lohachab, A. &amp; Dumontier, M. (2025). Privacy preservation in blockchain-based healthcare data sharing: A systematic review. <em>Peer-to-Peer Networking and Applications</em>, 18(6), 302.</p>
+      <p>NordLocker. What is zero-knowledge encryption. <a href="https://nordlocker.com/features/zero-knowledge-encryption/">nordlocker.com/features/zero-knowledge-encryption</a></p>
+      <p>Proton Drive pricing (verify current). <a href="https://proton.me/drive/pricing">proton.me/drive/pricing</a></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <hr class="divider" />
+    <p class="footer-note"></p>
+  </footer>
+
+  <script defer src="../assets/day-bg.js"></script>
+</body>
+</html>

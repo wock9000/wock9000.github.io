@@ -33,4 +33,5 @@ node_modules/
 dist/
 .cache/
 .venv/
+.venv-img/
 venv/
