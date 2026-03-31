@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>on clocks</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <p class="nav-back"><a href="../">&larr; musings</a></p>
+    <h1 class="title">on clocks</h1>
+    <p class="subtitle">a unified epoch and the problem of now</p>
+    <p class="date">2026-03</p>
+  </header>
+
+  <hr class="divider" />
+
+  <main class="article">
+
+    <p>
+      The early web had a charming habit of broadcasting the host's local time in the footer —
+      a small proof-of-life, a heartbeat. Visitor counters did the same thing for
+      presence: someone was here, the clock ticked, the number incremented. These widgets
+      were not useful. They were <em>honest</em> — a site saying, plainly, I exist in time too.
+    </p>
+
+    <p>
+      The footer of this site carries something in that tradition: a live readout of Unix
+      time alongside estimated block heights for Bitcoin, Ethereum, and Solana. The Unix
+      figure is exact. The chain figures carry a tilde — approximate, derived from genesis
+      constants and average interval assumptions. I want to linger on why that tilde matters,
+      and what it costs to remove it.
+    </p>
+
+    <h2>each chain is a clock</h2>
+
+    <p>
+      A blockchain does not merely record transactions — it records <em>order</em>. The chain
+      is a clock in the strict sense: it defines a sequence of states, each causally after
+      the last. But the rate at which this clock ticks, and what it means for a tick to be
+      final, varies wildly.
+    </p>
+
+    <p>
+      Bitcoin's clock ticks roughly every ten minutes, but this is a probabilistic average
+      maintained by difficulty adjustment. Any given block could arrive in thirty seconds or
+      forty minutes. Finality is social convention layered over probability — six confirmations
+      is not a protocol rule, it is a risk tolerance. The chain's answer to "what time is it"
+      is: block 906,370, and we're fairly sure.
+    </p>
+
+    <p>
+      Ethereum post-Merge ticks every exactly twelve seconds by protocol. Slots are
+      deterministic; the clock does not drift. Finality arrives two epochs out (~6.4 minutes)
+      through attestation aggregation — a committee of validators vouching, collectively, that
+      this is the canonical state. The answer is more precise, but it is still consensus,
+      not measurement.
+    </p>
+
+    <p>
+      Solana's clock is something else. Proof of History encodes the passage of time directly
+      into the ledger — a verifiable delay function hashing forward, producing a sequence
+      that proves elapsed computation. Slots run at a nominal 400 milliseconds. In practice,
+      with skipped slots, the average is closer to 460ms. The chain races. Its answer to
+      "what time is it" arrives before you finish asking.
+    </p>
+
+    <h2>the rosetta stone problem</h2>
+
+    <p>
+      When you want to say "this on-chain event happened at unix time T," you are performing
+      a cross-domain join. The chain knows its slot number. Unix knows wall clock time.
+      Translating between them requires a bridge: either an on-chain oracle attesting to
+      wall time, or the external assumption that you know approximately when block zero was
+      produced and what the average interval has been since.
+    </p>
+
+    <p>
+      The latter is what the footer does. It is not wrong — it is approximately right, and
+      the approximation is stable over long windows. Bitcoin's difficulty adjustment keeps
+      the ten-minute average honest. Ethereum's slot time is a protocol constant. Solana
+      drifts more, but remains bounded. The tilde is honest accounting for the residual
+      error in this translation.
+    </p>
+
+    <p>
+      What you cannot do, without an oracle or external attestation, is know the exact
+      current block from wall time alone — because you don't know the exact propagation
+      delays, fork history, and validator behavior between genesis and now. The estimate
+      is a projection, not a lookup.
+    </p>
+
+    <h2>unix as ground truth</h2>
+
+    <p>
+      It's worth pausing on the assumption buried in all of this: that Unix time is the
+      neutral substrate, the common reference frame everything else gets mapped to. This is
+      mostly true and occasionally wrong. Unix time is coordinated via NTP, which is itself
+      a distributed protocol with its own failure modes. Leap seconds introduce
+      discontinuities that different systems handle differently. UTC is a political
+      construct maintained by agreement among national metrology institutes.
+    </p>
+
+    <p>
+      There is no global now. This is not a blockchain problem — it is a physics problem.
+      Special relativity tells us that simultaneity is frame-dependent. For all practical
+      purposes on a single planet, the speed-of-light discrepancies are negligible. But the
+      principle holds: "now" is always a local concept, and consensus about it is a social
+      achievement, not a natural fact.
+    </p>
+
+    <p>
+      Blockchains make this explicit. Each chain builds its own notion of order and
+      calls it time. The interesting question is not which chain's clock is correct —
+      they all are, within their own frames — but what it costs, and what guarantees you
+      can make, when you try to join them.
+    </p>
+
+    <h2>toward a unified epoch</h2>
+
+    <p>
+      A unified cross-chain epoch is not a single canonical timestamp shared by all
+      chains. That would require global coordination, which defeats the point. It is
+      something softer: a common reference against which each chain's local time can
+      be approximately translated, with explicit uncertainty bounds.
+    </p>
+
+    <p>
+      Unix serves this role today, imperfectly. Genesis timestamps and average block
+      intervals are the conversion factors. The uncertainty compounds with chain age and
+      variability. For most purposes — logging, coordination between off-chain systems,
+      human communication — this is more than adequate. For on-chain logic that must
+      agree across chains, it is not enough without oracles.
+    </p>
+
+    <p>
+      The footer will keep ticking. The tildes will stay. I find something clarifying
+      about a display that marks its own approximation — a small reminder that every
+      clock is a model, every timestamp an agreement, and the question of now is always
+      worth asking again.
+    </p>
+
+  </main>
+
+  <footer>
+    <hr class="divider" />
+    <p class="footer-note">
+      <span id="epoch-ticker" class="epoch-ticker"
+            title="unix time (exact) · estimated chain clocks from genesis constants">·</span>
+    </p>
+  </footer>
+
+  <script defer src="../assets/day-bg.js"></script>
+  <script defer src="../assets/epoch.js"></script>
+</body>
+</html>

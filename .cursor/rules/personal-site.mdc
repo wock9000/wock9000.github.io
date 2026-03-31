@@ -15,7 +15,7 @@ Open **`lighthouse.code-workspace`** in a **dedicated Cursor window** for all si
 
 - Plain **HTML** and **CSS**; one shared `style.css`.
 - **Root (`index.html`):** musings archive (list). No separate landing page.
-- **Pieces** under `musings/`: pure HTML; no `<script>` on those pages. New pieces: copy `musings/_template.html`, add a `<li>` to **`index.html`** at repo root (newest first).
+- **Pieces** under `musings/`: plain HTML; one optional deferred script **`../assets/day-bg.js`** (time-of-day background) is allowed from the template—do not add other scripts. Piece headers use **`&lt;p class="date"&gt;YYYY-MM&lt;/p&gt;`** only (no human/unix hover swap). The **archive** (`index.html`) uses **`.entry-date.date-swap`** for optional unix-on-hover. New pieces: copy `musings/_template.html`, add a `<li>` to **`index.html`** at repo root (newest first).
 
 ## Do not add
 

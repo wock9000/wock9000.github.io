@@ -1,14 +1,48 @@
 /* ─── base ─────────────────────────────────────────────────────────────────── */
 
+html {
+  background-color: #f2f0eb;
+  min-height: 100%;
+  /* set by assets/day-bg.js — semi-transparent grayscale art layer */
+  --egg-bg-image: none;
+  --egg-bg-opacity: 0.09;
+}
+
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--egg-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--egg-bg-opacity);
+  /* assets are grayscale PNGs; keeps tone if we swap in color sources */
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+/* No strobing or flashing UI on this site; decorative layer respects transparency preference. */
+@media (prefers-reduced-transparency: reduce) {
+  html::before {
+    opacity: 0 !important;
+    background-image: none !important;
+    filter: none;
+  }
+}
+
 body {
+  position: relative;
+  z-index: 1;
   line-height: 1.6;
   font-size: 18px;
   padding: 0 10px;
   margin: 60px auto;
   max-width: 700px;
-  background-color: #f2f0eb;
+  background-color: transparent;
   color: #1a1a1a;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 h1, h2, h3, h4 {
@@ -33,15 +67,22 @@ a:visited {
   color: blue;
 }
 
+/* Inline code: Courier + dotted underline (classic “code” affordance without a pill) */
 code,
 .code {
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  line-height: 1.6;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1em;
   padding: 0;
   margin: 0;
-  font-size: 85%;
-  background-color: rgba(0, 0, 0, 0.04);
-  border-radius: 3px;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-color: transparent;
+  border-bottom: 1px dotted #999;
+}
+
+pre code {
+  font-size: inherit;
+  border-bottom: none;
 }
 
 /* ─── header ────────────────────────────────────────────────────────────────── */
@@ -66,11 +107,39 @@ header {
   color: #555;
 }
 
+/* Piece pages (musings/*.html): plain YYYY-MM only. Unix swap lives on archive .entry-date.date-swap only. */
 .date {
   text-align: center;
   font-size: 0.85em;
   color: #888;
   margin-top: 0.2em;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* Human ↔ unix swap — archive list only (.entry-date.date-swap), not .date on articles */
+.date-swap .date-unix {
+  display: none;
+  font-family: "Courier New", Courier, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.date-swap:hover .date-human,
+.date-swap:focus .date-human {
+  display: none;
+}
+
+.date-swap:hover .date-unix,
+.date-swap:focus .date-unix {
+  display: inline;
+}
+
+.date-swap:focus {
+  outline: none;
+}
+
+.date-swap:focus-visible {
+  outline: 1px dotted #666;
+  outline-offset: 2px;
 }
 
 /* ─── dividers ──────────────────────────────────────────────────────────────── */
@@ -132,6 +201,23 @@ main.article em {
   font-style: italic;
 }
 
+/* Optional end-of-piece sources: footnote tone; no section title required */
+main.article .sources-footnote {
+  margin-top: 2.5em;
+  padding-top: 1em;
+  border-top: 1px solid #e0e0e0;
+}
+
+main.article .sources-footnote p {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 0.75em;
+}
+
+main.article .sources-footnote p:last-child {
+  margin-bottom: 0;
+}
+
 /* ─── gifs ───────────────────────────────────────────────────────────────────── */
 
 .gif-block {
@@ -167,20 +253,6 @@ main.article em {
 .egg1:hover + .hide {
   display: inline-block;
   color: red;
-}
-
-/* ─── kurama bg (from your stylesheet) ──────────────────────────────────────── */
-
-.kurama {
-  display: block;
-  background-image: url("kurama-bg.webp");
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 /* ─── utility ────────────────────────────────────────────────────────────────── */
@@ -243,6 +315,22 @@ nav a {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Archive date: fixed 11ch Courier cell — human + unix share metrics; no title drift on swap */
+.entry-date.date-swap {
+  cursor: default;
+  font-family: "Courier New", Courier, monospace;
+  font-variant-numeric: tabular-nums;
+  width: 11ch;
+  flex: 0 0 11ch;
+  text-align: right;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.entry-date.date-swap .date-unix {
+  font-family: inherit;
+}
+
 /* ─── footer ─────────────────────────────────────────────────────────────────── */
 
 footer {
@@ -253,4 +341,15 @@ footer {
   font-size: 0.8em;
   color: #888;
   text-align: center;
+}
+
+/* ─── epoch ticker ───────────────────────────────────────────────────────────── */
+
+.epoch-ticker {
+  font-family: "Courier New", Courier, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75em;
+  letter-spacing: 0.02em;
+  color: #aaa;
+  white-space: nowrap;
 }

@@ -18,7 +18,16 @@
     <ul class="archive-list">
 
       <li>
-        <span class="entry-date">2026-03</span>
+        <span class="entry-date date-swap" tabindex="0" aria-label="2026-03, unix seconds 1774828800">
+          <span class="date-human" aria-hidden="true">2026-03</span><span class="date-unix" aria-hidden="true">1774828800</span>
+        </span>
+        <a href="musings/on-clocks.html">On Clocks</a>
+      </li>
+
+      <li>
+        <span class="entry-date date-swap" tabindex="0" aria-label="2026-03, unix seconds 1772323200">
+          <span class="date-human" aria-hidden="true">2026-03</span><span class="date-unix" aria-hidden="true">1772323200</span>
+        </span>
         <a href="musings/esg-proposal.html">Toward Truthful ESG</a>
       </li>
 
@@ -27,8 +36,13 @@
 
   <footer>
     <hr class="divider" />
-    <p class="footer-note"></p>
+    <p class="footer-note">
+      <span id="epoch-ticker" class="epoch-ticker"
+            title="unix time (exact) · estimated chain clocks from genesis constants">·</span>
+    </p>
   </footer>
 
+  <script defer src="assets/day-bg.js"></script>
+  <script defer src="assets/epoch.js"></script>
 </body>
 </html>

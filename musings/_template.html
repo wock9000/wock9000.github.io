@@ -12,7 +12,7 @@
     <p class="nav-back"><a href="../">&larr; musings</a></p>
     <h1 class="title"><!-- title --></h1>
     <p class="subtitle"><!-- subtitle, or delete --></p>
-    <p class="date"><!-- YYYY-MM --></p>
+    <p class="date"><!-- YYYY-MM — human date only on piece pages (unix swap is archive-only) -->2026-03</p>
   </header>
 
   <hr class="divider" />
@@ -26,8 +26,9 @@
   <main class="article">
 
     <!-- write directly in html using your stylesheet's tags -->
-    <!-- h2 = section heading (italic), h3 = subheading (centered bold) -->
+    <!-- h2 = section heading, h3 = subheading (centered bold) -->
     <!-- p, ul/li, blockquote, code all work as expected -->
+    <!-- Optional sources: no “Works cited” heading — use section.sources-footnote + same citation style as body -->
 
     <p></p>
 
@@ -35,8 +36,13 @@
 
   <footer>
     <hr class="divider" />
-    <p class="footer-note"></p>
+    <p class="footer-note">
+      <span id="epoch-ticker" class="epoch-ticker"
+            title="unix time (exact) · estimated chain clocks from genesis constants">·</span>
+    </p>
   </footer>
 
+  <script defer src="../assets/day-bg.js"></script>
+  <script defer src="../assets/epoch.js"></script>
 </body>
 </html>
