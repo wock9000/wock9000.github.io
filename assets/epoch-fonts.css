@@ -1,0 +1,17 @@
+/* Self-hosted Noto for .epoch-sep only; load alongside pages that include the epoch ticker (see ATTRIBUTION.md). */
+
+@font-face {
+  font-family: "Noto Sans Symbols 2";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/noto-sans-symbols-2-latin-symbols.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/noto-color-emoji.woff2") format("woff2");
+}

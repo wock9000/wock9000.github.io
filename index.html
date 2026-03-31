@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>musings</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/epoch-fonts.css" />
 </head>
 <body class="archive-page">
 
@@ -36,13 +37,13 @@
 
   <footer>
     <hr class="divider" />
-    <p class="footer-note">
-      <span id="epoch-ticker" class="epoch-ticker"
-            title="unix time (exact) · estimated chain clocks from genesis constants">·</span>
-    </p>
+    <div class="footer-note footer-epoch">
+      <span id="epoch-ticker" class="epoch-ticker" role="group" aria-label="Unix time and estimated chain heights"></span>
+    </div>
   </footer>
 
   <script defer src="assets/day-bg.js"></script>
   <script defer src="assets/epoch.js"></script>
+  <script defer src="assets/epoch-delim-picker.js"></script>
 </body>
 </html>

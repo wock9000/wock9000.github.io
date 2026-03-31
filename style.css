@@ -343,13 +343,39 @@ footer {
   text-align: center;
 }
 
+.footer-epoch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 /* ─── epoch ticker ───────────────────────────────────────────────────────────── */
 
 .epoch-ticker {
-  font-family: "Courier New", Courier, monospace;
-  font-variant-numeric: tabular-nums;
   font-size: 0.75em;
   letter-spacing: 0.02em;
   color: #aaa;
   white-space: nowrap;
+}
+
+.epoch-seg {
+  cursor: default;
+  font-family: "Courier New", Courier, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Delimiters (.epoch-sep): self-hosted Noto (see ATTRIBUTION.md) + system fallbacks.
+ * .epoch-seg stays Courier — only delimiter spans use the broad stack.
+ */
+.epoch-sep {
+  display: inline-block;
+  width: 3ch;
+  min-width: 3ch;
+  text-align: center;
+  vertical-align: baseline;
+  font-family: "Noto Color Emoji", "Noto Sans Symbols 2", "Segoe UI Emoji", "Apple Color Emoji",
+    "Noto Sans", system-ui, sans-serif;
+  line-height: 1;
 }

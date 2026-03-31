@@ -1,0 +1,26 @@
+Delimiter pick (epoch-delim-picker.js)
+======================================
+
+The visible viewport is divided into exactly TOTAL = 1,112,064 rectangular cells:
+  1024 columns × 1086 rows  (product equals TOTAL).
+
+For a click with Shift held (desktop / min-width 641px):
+  cellX = floor(clientX / (innerWidth  / 1024))
+  cellY = floor(clientY / (innerHeight / 1086))
+  cellIndex = cellY * 1024 + cellX   (unique 0 .. TOTAL-1)
+
+Scalar ordinal (same as before):
+  si = (cellIndex * K) mod TOTAL     with gcd(K,TOTAL)=1
+
+Code point: indexToScalar(si) — surrogates skipped.
+
+Why Shift: avoids hijacking normal clicks and link navigation.
+
+Why not “every raw pixel”: a 1920×1080 screen has ~2M pixels but only ~1.11M Unicode
+scalars; a fixed grid of exactly TOTAL cells gives a true 1:1 cell→scalar permutation
+after the multiply step, while staying O(1) per click.
+
+Mobile: script does not assign delimiters (narrow viewports); ticker still runs.
+
+Display: .epoch-sep uses an emoji/symbol-capable font stack so delimiters are less often
+tofu than Courier alone. Rare code points may still miss glyphs.
