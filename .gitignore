@@ -27,6 +27,8 @@ CLAUDE.md
 
 # Local dev
 *.log
+__pycache__/
+*.py[cod]
 
 # Optional stacks you might add later (defensive; repo stays no-build for now)
 node_modules/

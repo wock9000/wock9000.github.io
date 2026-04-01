@@ -1,0 +1,28 @@
+# Fly.io: persistent machine (no forced sleep like Render free tier).
+# Docs: https://fly.io/docs/reference/configuration/
+#
+# From scratch:
+#   cd apps/wti-intraday && fly auth login && fly launch --copy-config --no-deploy
+# Then: fly deploy
+#
+# Replace `wock9000-wti-intraday` with a unique app name if taken.
+
+app = "wock9000-wti-intraday"
+primary_region = "sjc"
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Keep a machine running so iframe loads stay instant (unlike Render free cold start).
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  # 512MB: comfortable for Dash + Pandas + Plotly + one Gunicorn worker on free/cheap tiers.
+  memory = "512mb"
+  cpus = 1
+  cpu_kind = "shared"
