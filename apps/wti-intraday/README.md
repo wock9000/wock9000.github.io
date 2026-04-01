@@ -2,6 +2,8 @@
 
 NYMEX WTI front-month (`CL=F` via yfinance), candlesticks + volume + session VWAP. Embed in GitHub Pages via iframe; **host of record: [Render](https://render.com) free web service** (root [`render.yaml`](../../render.yaml)). **Fly.io** remains optional if you want a persistent machine and no cold starts (see below).
 
+The **full** pipeline/geo dashboard (`~/wti-dashboard`) lives in **[`../wti-live/`](../wti-live/)** as a second Render service (`wock9000-wti-live`), not in this folder.
+
 ## Render vs Fly (which is “better”?)
 
 | | **Render (free web service)** | **Fly.io (small VM)** |
@@ -71,7 +73,7 @@ Open <http://127.0.0.1:8050>.
 2. From repo: `cd apps/wti-intraday`
 3. If you have no Fly app yet: `fly launch` (accept or edit `fly.toml`; this repo already includes one).
 4. `fly deploy`
-5. Your app is at `https://wock9000-wti-intraday.fly.dev` (or whatever `app` name you used). Put that URL in the iframe `src` in `musings/lithium-wti-dashboard.html`.
+5. Your app is at `https://wock9000-wti-intraday.fly.dev` (or whatever `app` name you used). Put that URL in the iframe `src` in `musings/critical-minerals-wti-dashboard.html`.
 
 `fly.toml` sets **`auto_stop_machines = "off"`** so a machine stays up — embeds load without Render-style wake-up delay.
 

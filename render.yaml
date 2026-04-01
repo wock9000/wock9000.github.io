@@ -1,11 +1,19 @@
 # Render Blueprint: https://render.com/docs/blueprint-spec
-# Free web service (sleeps after ~15 min idle; first request may take ~30s).
+# Free web services (sleeps after ~15 min idle; first request may take ~30s).
 services:
   - type: web
     name: wock9000-wti-intraday
     runtime: python
     plan: free
-    rootDirectory: apps/wti-intraday
+    rootDir: apps/wti-intraday
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT app:server
+    healthCheckPath: /
+  - type: web
+    name: wock9000-wti-live
+    runtime: python
+    plan: free
+    rootDir: apps/wti-live
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120 app:server
     healthCheckPath: /

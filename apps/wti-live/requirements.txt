@@ -1,0 +1,9 @@
+dash>=2.16
+plotly>=5.20
+yfinance>=0.2.40
+pandas>=2.0
+requests>=2.31
+databento>=0.73
+duckdb>=1.0
+python-dotenv>=1.0
+gunicorn>=21,<24
