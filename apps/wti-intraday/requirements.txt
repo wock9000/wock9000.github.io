@@ -1,0 +1,5 @@
+dash>=2.14,<4
+plotly>=5.18,<6
+yfinance>=0.2.40
+pandas>=2.0,<3
+gunicorn>=21,<24
