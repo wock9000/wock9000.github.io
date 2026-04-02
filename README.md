@@ -2,6 +2,8 @@
 
 Static personal site on **GitHub Pages**. No build step.
 
+**Security:** do not commit secrets — see [`SECURITY.md`](SECURITY.md).
+
 - **Root:** `index.html` — musings list.
 - **Pieces:** `musings/*.html` (plain HTML; `_template.html` for new entries).
 
