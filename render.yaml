@@ -1,4 +1,5 @@
 # Render Blueprint: https://render.com/docs/blueprint-spec
+# Kept for local/optional deploys; the static site does not embed public service URLs.
 # Free web services (sleeps after ~15 min idle; first request may take ~30s).
 services:
   - type: web

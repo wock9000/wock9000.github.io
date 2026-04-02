@@ -1,5 +1,7 @@
 # WTI Live (full dashboard)
 
+**Public embeds:** The static site does not link live dashboard URLs; run or deploy this app for private/local use.
+
 Heavier Dash app from `~/wti-dashboard`: **FLOWS** (geo + pipeline model) and **CHART** (1m bars), DuckDB, optional Databento + EIA.
 
 - **Deploy:** `apps/wti-live` as a second Render web service (see root `render.yaml`).

@@ -1,8 +1,10 @@
 # WTI intraday dashboard (Dash)
 
-NYMEX WTI front-month (`CL=F` via yfinance), candlesticks + volume + session VWAP. Embed in GitHub Pages via iframe; **host of record: [Render](https://render.com) free web service** (root [`render.yaml`](../../render.yaml)). **Fly.io** remains optional if you want a persistent machine and no cold starts (see below).
+**Public embeds:** This repo does **not** advertise live Render/Fly URLs in site pages (reduces third-party surface on the static site). Deploy privately if you use this app; use placeholders in docs, not fixed hostnames.
 
-The **full** pipeline/geo dashboard (`~/wti-dashboard`) lives in **[`../wti-live/`](../wti-live/)** as a second Render service (`wock9000-wti-live`), not in this folder.
+NYMEX WTI front-month (`CL=F` via yfinance), candlesticks + volume + session VWAP. Optional deploy via **[Render](https://render.com)** (root [`render.yaml`](../../render.yaml)) or **Fly.io** (see below).
+
+The **full** pipeline/geo dashboard lives in **[`../wti-live/`](../wti-live/)** as a second service in `render.yaml`, not in this folder.
 
 ## Render vs Fly (which is “better”?)
 
@@ -73,7 +75,7 @@ Open <http://127.0.0.1:8050>.
 2. From repo: `cd apps/wti-intraday`
 3. If you have no Fly app yet: `fly launch` (accept or edit `fly.toml`; this repo already includes one).
 4. `fly deploy`
-5. Your app is at `https://wock9000-wti-intraday.fly.dev` (or whatever `app` name you used). Put that URL in the iframe `src` in `musings/critical-minerals-wti-dashboard.html`.
+5. Your app is at `https://YOUR-APP.fly.dev` (see `fly.toml` `app` name). Use that URL only in private embeds or local preview — not required for the public Pages site.
 
 `fly.toml` sets **`auto_stop_machines = "off"`** so a machine stays up — embeds load without Render-style wake-up delay.
 
@@ -81,7 +83,7 @@ Open <http://127.0.0.1:8050>.
 
 ## CSP / iframe
 
-`app.py` sets `Content-Security-Policy: frame-ancestors … https://wock9000.github.io …`. Add your Fly or Render hostname only if you need stricter locking; the **parent** of the iframe is GitHub Pages, not the API host.
+`app.py` sets `Content-Security-Policy: frame-ancestors` for GitHub Pages (adjust the hostname if your site URL differs). Add your Fly or Render hostname only if you need stricter locking; the **parent** of the iframe is GitHub Pages, not the API host.
 
 ## Disclaimer
 
