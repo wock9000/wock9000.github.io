@@ -444,12 +444,6 @@ nav a {
   font-family: inherit;
 }
 
-/* Longer human labels (e.g. Mar 17 2026, 4am UTC) — keep swap alignment */
-.entry-date.date-swap.date-swap-wide {
-  width: 26ch;
-  flex: 0 0 26ch;
-}
-
 /* ─── footer ─────────────────────────────────────────────────────────────────── */
 
 footer {
