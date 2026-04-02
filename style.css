@@ -492,3 +492,258 @@ footer {
     "Noto Sans", system-ui, sans-serif;
   line-height: 1;
 }
+
+/* ─── Drift exploit longform (musings/drift-exploit-post.html) — site light theme ─ */
+
+main.article.drift-exploit .toc {
+  background: #faf9f7;
+  border: 1px solid #c8c6c1;
+  border-left: 3px solid #3355aa;
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  font-size: 0.95em;
+}
+
+main.article.drift-exploit .toc-title {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #444;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.88em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+main.article.drift-exploit .toc a:link,
+main.article.drift-exploit .toc a:visited {
+  color: #1a1a1a;
+}
+
+main.article.drift-exploit .toc a:hover {
+  color: blue;
+}
+
+main.article.drift-exploit .callout {
+  border-left: 3px solid #3355aa;
+  background: #f5f3ee;
+  padding: 0.85rem 1rem;
+  border-radius: 0 4px 4px 0;
+  margin: 1.25rem 0;
+  font-size: 0.95em;
+}
+
+main.article.drift-exploit .callout.warn {
+  border-color: #b85a00;
+}
+
+main.article.drift-exploit .callout.danger {
+  border-color: #a33;
+}
+
+main.article.drift-exploit .callout.success {
+  border-color: #2a6;
+}
+
+main.article.drift-exploit .callout-label {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #3355aa;
+}
+
+main.article.drift-exploit .callout.warn .callout-label {
+  color: #b85a00;
+}
+
+main.article.drift-exploit .callout.danger .callout-label {
+  color: #a33;
+}
+
+main.article.drift-exploit .callout.success .callout-label {
+  color: #1a6b3a;
+}
+
+main.article.drift-exploit .viz-wrap {
+  background: #faf9f7;
+  border: 1px solid #c8c6c1;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+main.article.drift-exploit .viz-title {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+main.article.drift-exploit svg.viz-chart {
+  display: block;
+  width: 100%;
+  font-family: "Courier New", Courier, monospace;
+}
+
+main.article.drift-exploit .timeline {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0 1.25rem;
+}
+
+main.article.drift-exploit .timeline li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 2.25rem;
+  border-left: 2px solid #ccc;
+  margin-left: 0.5rem;
+}
+
+main.article.drift-exploit .timeline li::before {
+  content: "";
+  position: absolute;
+  left: -0.4rem;
+  top: 1rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: #a33;
+  border: 2px solid #f2f0eb;
+}
+
+main.article.drift-exploit .timeline .t-date {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  color: #a33;
+  margin-bottom: 0.2rem;
+}
+
+main.article.drift-exploit .timeline .t-event {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+main.article.drift-exploit .timeline .t-detail {
+  font-size: 0.95em;
+  color: #555;
+}
+
+main.article.drift-exploit .amt {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+}
+
+main.article.drift-exploit .amt.red {
+  color: #a33;
+}
+
+main.article.drift-exploit .amt.orange {
+  color: #b85a00;
+}
+
+main.article.drift-exploit .amt-accent {
+  color: blue;
+}
+
+main.article.drift-exploit .badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0.12rem 0.4rem;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+main.article.drift-exploit .badge-red {
+  background: rgba(170, 51, 51, 0.12);
+  color: #822;
+}
+
+main.article.drift-exploit .badge-orange {
+  background: rgba(184, 90, 0, 0.12);
+  color: #630;
+}
+
+main.article.drift-exploit .badge-blue {
+  background: rgba(0, 0, 180, 0.08);
+  color: #11a;
+}
+
+main.article.drift-exploit .cite {
+  font-size: 0.88em;
+  color: #666;
+}
+
+main.article.drift-exploit .cite a:link,
+main.article.drift-exploit .cite a:visited {
+  color: #555;
+}
+
+main.article.drift-exploit .cell-muted {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+main.article.drift-exploit blockquote.pull-quote {
+  border-left: 3px solid #3355aa;
+  margin: 1.5rem 0;
+  padding: 0.5rem 1rem;
+  background: #faf9f7;
+  border-radius: 0 4px 4px 0;
+  color: #333;
+}
+
+main.article.drift-exploit blockquote.pull-quote > p:first-child {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+main.article.drift-exploit .pull-quote-attrib {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  font-style: normal;
+}
+
+main.article.drift-exploit ul.list-principles {
+  margin: 0.75rem 0 1rem 1.5rem;
+  line-height: 2;
+}
+
+main.article.drift-exploit .post-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.88em;
+  color: #555;
+}
+
+main.article.drift-exploit .post-footer h4 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: "Courier New", Courier, monospace;
+  margin-bottom: 0.6rem;
+  color: #666;
+}
+
+main.article.drift-exploit .post-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+main.article.drift-exploit .post-footer li {
+  margin-bottom: 0.35rem;
+}
+
+main.article.drift-exploit .post-footer-disclaimer {
+  margin-top: 1.5rem;
+  font-size: 0.9em;
+  color: #666;
+}
