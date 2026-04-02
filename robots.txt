@@ -1,0 +1,3 @@
+# Draft musings (filenames like _draft-*.html) are not linked from the index.
+User-agent: *
+Disallow: /musings/_draft
