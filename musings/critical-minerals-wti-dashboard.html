@@ -3,127 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
   <title>Critical minerals, energy, and a WTI dashboard</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
 
+  <!-- Public stub: full draft lives at musings/_draft-critical-minerals-wti-dashboard.html -->
+
   <header>
     <p class="nav-back"><a href="../">&larr; musings</a></p>
     <h1 class="title">Critical minerals, energy, and a WTI dashboard</h1>
-    <p class="subtitle">From deposit geography to intraday crude — building a deterministic data repo</p>
-    <p class="date">Mar 17, 2026 · 04:00 UTC</p>
+    <p class="subtitle">Temporarily unpublished</p>
   </header>
 
   <hr class="divider" />
 
   <main class="article">
-
-    <h2>Where it started</h2>
-
-    <p>Brine and hard-rock deposits for battery-grade supply, public supply-chain data, and a parallel thread on energy commodities. The work split naturally into a versioned <strong>data story</strong> (static page below), a <strong>lightweight</strong> CL=F chart (Render), and a separate <strong>full WTI live</strong> build (flows + intraday chart, same repo).</p>
-
-    <h2>Deposit geography</h2>
-
-    <p>Supply is concentrated: the Andean brine triangle (Bolivia, Argentina, Chile), Australian spodumene (e.g. Greenbushes), US projects (Thacker Pass, Clayton Valley), Gulf and Midwest refining and export nodes, and gas benchmarks (Henry Hub, Permian hubs) plus LNG export capacity. China dominates much of downstream processing — that concentration shows up whenever you map trade and price series together.</p>
-
-    <h2>Data architecture</h2>
-
-    <p>Target layout for a reproducible public-data repo (ETL + validation + optional static notebook export):</p>
-
-    <pre><code>critical-minerals-data/
-├── processed/
-│   ├── production_by_country.csv
-│   ├── battery_metals.csv
-│   ├── dispersed_metals.csv
-│   └── energy/
-│       ├── natural_gas.csv
-│       ├── crude_oil.csv
-│       └── lng_capacity.csv
-├── etl/
-│   ├── fetch_usgs_mcs.py
-│   ├── fetch_eia_energy.py
-│   └── validate.py
-├── docs/
-│   └── notebook.html
-└── .github/workflows/etl.yml</code></pre>
-
-    <p>USGS MCS and EIA are the main public anchors; Comtrade and other feeds are optional extensions.</p>
-
-    <h2>Data story (static)</h2>
-
-    <p>Vega-Lite panels in <code>assets/critical-minerals-notebook.html</code> — committed with the site. Swap for an Observable/Framework export later if you want the same path.</p>
-
-    <figure class="article-figure" style="max-width: 52rem;">
-      <iframe
-        title="Critical minerals data story"
-        src="../assets/critical-minerals-notebook.html"
-        width="100%"
-        height="720"
-        style="border: none; border-radius: 4px; min-height: 280px; background: #0a0c0f;"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
-      <figcaption style="font-size: 0.88em; color: #555; margin-top: 0.5em; line-height: 1.35;">
-        <a href="../assets/critical-minerals-notebook.html" target="_blank" rel="noopener noreferrer">Open</a> · raise <code>height</code> if you replace with a taller export.
-      </figcaption>
-    </figure>
-
-    <h2>WTI — simple chart</h2>
-
-    <p>Small Dash app in <code>apps/wti-intraday/</code>: candlesticks, volume, VWAP, stat bar, yfinance-backed. Good for a fast embed.</p>
-
-    <figure class="article-figure" style="max-width: 52rem;">
-      <iframe
-        title="WTI intraday — simple"
-        src="https://wock9000-wti-intraday.onrender.com"
-        width="100%"
-        height="720"
-        style="border: none; border-radius: 4px; min-height: 420px; background: #0a0c0f;"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
-      <figcaption style="font-size: 0.88em; color: #555; margin-top: 0.5em; line-height: 1.35;">
-        Dark theme embed. Render free tier may <strong>sleep</strong> — first load can be slow.
-        <a href="https://wock9000-wti-intraday.onrender.com" target="_blank" rel="noopener noreferrer">Open</a>
-      </figcaption>
-    </figure>
-
-    <h2>WTI — full live dashboard</h2>
-
-    <p>Heavier app in <code>apps/wti-live/</code> (from <code>~/wti-dashboard</code>): <strong>FLOWS</strong> map + pipeline model and <strong>CHART</strong> tab, DuckDB, optional Databento and EIA keys via env. Second Render service — deploy from root <code>render.yaml</code>, then set iframe <code>src</code> to your live URL if the name differs.</p>
-
-    <figure class="article-figure" style="max-width: 52rem;">
-      <iframe
-        title="WTI Live — flows and chart"
-        src="https://wock9000-wti-live.onrender.com"
-        width="100%"
-        height="900"
-        style="border: none; border-radius: 4px; min-height: 560px; background: #f7f8fa;"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
-      <figcaption style="font-size: 0.88em; color: #555; margin-top: 0.5em; line-height: 1.35;">
-        <a href="https://wock9000-wti-live.onrender.com" target="_blank" rel="noopener noreferrer">Open full window</a> · optional env: <code>DATABENTO_API_KEY</code>, <code>EIA_API_KEY</code> on Render.
-      </figcaption>
-    </figure>
-
-    <hr class="divider" />
-
-    <section class="sources-footnote" aria-label="Sources">
-      <p>USGS Mineral Commodity Summaries. <a href="https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries">usgs.gov</a></p>
-      <p>EIA Open Data API. <a href="https://www.eia.gov/opendata/">eia.gov/opendata</a></p>
-      <p>yfinance. <a href="https://github.com/ranaroussi/yfinance">github.com/ranaroussi/yfinance</a></p>
-      <p>Dash / Plotly. <a href="https://dash.plotly.com/">dash.plotly.com</a></p>
-    </section>
-
+    <p>
+      This entry is not on the musings list for now; the draft needs more work before it matches the rest of the site.
+      Check back later.
+    </p>
   </main>
 
-  <footer>
-    <hr class="divider" />
-    <p class="footer-note"></p>
-  </footer>
-
-  <script defer src="../assets/day-bg.js"></script>
 </body>
 </html>
