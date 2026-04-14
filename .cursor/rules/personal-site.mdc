@@ -9,7 +9,13 @@ This repository is a **personal** static site. Treat it as separate from employe
 
 ## Recommended workflow (Cursor)
 
-Open **`lighthouse.code-workspace`** in a **dedicated Cursor window** for all site work. This rule has **`alwaysApply: true`** here only: the agent picks it up automatically in that window—no paste-in context. Avoid mixing site edits into the primary Arteria workspace unless you use **`site-and-sync-ai.code-workspace`** on purpose.
+Open **`lighthouse.code-workspace`** in a **dedicated Cursor window** for all site work (or **File → Open Folder** and choose this repo, `wock9000.github.io`). This rule has **`alwaysApply: true`** here only: the agent picks it up automatically in that window—no paste-in context. Avoid mixing site edits into the primary Arteria workspace unless you use **`site-and-sync-ai.code-workspace`** on purpose.
+
+### MCP and workspace root
+
+**Cursor MCP tools use whatever workspace is open as the mount point.** If your root folder is another project (e.g. sync-ai / research), file operations and MCP-backed writes can land there instead of this site repo—forcing a detour or manual copy.
+
+**To fix that permanently for site work:** before starting a session where you want agents or MCP to edit **`wock9000.github.io`**, open **this repository** as the workspace—**File → Open Folder** → select the site repo (or open **`lighthouse.code-workspace`** from it). Keep a separate Cursor window for other codebases when you need both.
 
 ## Stack
 
